@@ -7,10 +7,45 @@ namespace MauticPlugin\MauticMcpBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-class MauticMcpExtension extends Extension
+class MauticMcpExtension extends Extension implements PrependExtensionInterface
 {
+    public function prepend(ContainerBuilder $container): void
+    {
+        if ($container->hasExtension('mcp')) {
+            $container->prependExtensionConfig('mcp', [
+                'app'               => 'mautic',
+                'version'           => '0.1.0',
+                'description'       => 'Local Mautic MCP server',
+                'instructions'      => 'Read-only access to Mautic contacts and campaigns.',
+                'discovery'         => [
+                    'scan_dirs'    => [
+                        'plugins/MauticMcpBundle',
+                    ],
+                    'exclude_dirs' => [
+                        'plugins/MauticMcpBundle/Tests',
+                    ],
+                ],
+                'client_transports' => [
+                    'stdio' => true,
+                    'http'  => false,
+                ],
+                'http'              => [
+                    'path'    => '/mcp',
+                    'session' => [
+                        'store'      => 'cache',
+                        'cache_pool' => 'cache.mcp.sessions',
+                        'prefix'     => 'mcp_',
+                        'ttl'        => 3600,
+                    ],
+                ],
+            ]);
+        }
+
+    }
+
     /**
      * @param mixed[] $configs
      */

@@ -2,6 +2,8 @@
 
 This plugin is the first read-only MCP skeleton for exposing a small set of Mautic contact and campaign tools from inside the Mautic app.
 
+For the design guardrails behind that choice, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 ## Current tools
 
 - `search_contacts`
@@ -52,3 +54,14 @@ $container->loadFromExtension('mcp', [
 ```php
 ['path' => '^/mcp(?:/|$)', 'roles' => AuthenticatedVoter::IS_AUTHENTICATED_FULLY],
 ```
+
+6. Reload plugins and clear cache:
+
+```bash
+php -d memory_limit=1024M bin/console --env=dev mautic:plugins:reload -n
+php -d memory_limit=1024M bin/console --env=dev cache:clear
+```
+
+## Real-world usage
+
+For client configs, manual JSON-RPC calls, and task-oriented recipes, see [docs/REAL_WORLD_EXAMPLES.md](docs/REAL_WORLD_EXAMPLES.md).

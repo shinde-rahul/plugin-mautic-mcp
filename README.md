@@ -27,22 +27,9 @@ $bundles[] = new Symfony\AI\McpBundle\McpBundle();
 <?php
 
 $container->loadFromExtension('mcp', [
-    'app'               => 'mautic',
-    'version'           => '0.1.0',
-    'description'       => 'Local Mautic MCP server',
-    'instructions'      => 'Read-only access to Mautic contacts and campaigns.',
     'client_transports' => [
         'stdio' => true,
         'http'  => true,
-    ],
-    'http' => [
-        'path'    => '/mcp',
-        'session' => [
-            'store'      => 'cache',
-            'cache_pool' => 'cache.mcp.sessions',
-            'prefix' => 'mcp_',
-            'ttl'    => 3600,
-        ],
     ],
 ]);
 ```

@@ -3,18 +3,28 @@
 declare(strict_types=1);
 
 use Mautic\CoreBundle\DependencyInjection\MauticCoreExtension;
+use MauticPlugin\MauticMcpBundle\Security\PermissionChecker;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+
 return function (ContainerConfigurator $configurator): void {
+    $configurator->parameters()
+        ->set('mautic_mcp.allow_stdio_admin_fallback', false);
+
     $services = $configurator->services()
         ->defaults()
         ->autowire()
         ->autoconfigure()
+        ->bind('$allowStdioAdminFallback', param('mautic_mcp.allow_stdio_admin_fallback'))
         ->public();
 
-    $excludes = [
-    ];
+    $excludes = MauticCoreExtension::DEFAULT_EXCLUDES;
 
     $services->load('MauticPlugin\\MauticMcpBundle\\', '../')
-        ->exclude('../{'.implode(',', array_merge(MauticCoreExtension::DEFAULT_EXCLUDES, $excludes)).'}');
+        ->exclude('../{'.implode(',', $excludes).'}');
+
+    $services->set(PermissionChecker::class);
+    $services->alias(KernelInterface::class, 'kernel');
 };

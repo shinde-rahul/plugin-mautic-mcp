@@ -3,6 +3,12 @@
     "description": "Mautic MCP server plugin providing controlled tools for AI-assisted development, testing, support, and campaign debugging workflows.",
     "type": "mautic-plugin",
     "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Rahul Shinde",
+            "email": "shinde.r.a@gmail.com"
+        }
+    ],
     "keywords": [
         "mautic",
         "mautic-plugin",

@@ -1,4 +1,4 @@
-# MauticMcpBundle
+# Model Context Protocol Server for Mautic (MauticMcpBundle)
 
 ## INTRODUCTION
 
